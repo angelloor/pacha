@@ -1,6 +1,6 @@
 import NetInfo from "@react-native-community/netinfo"
 import React, { Component } from 'react'
-import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Image, StyleSheet, TouchableOpacity, View, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { connect } from 'react-redux'
 import iconAbout from '../assets/static/about.png'
@@ -501,7 +501,7 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: '20%',
+        height: (Platform.OS === 'ios') ? '16%' : '20%',
         backgroundColor: Color.Gray,
         alignSelf: 'flex-start',
         justifyContent: 'center'
@@ -580,7 +580,9 @@ const styles = StyleSheet.create({
     },
     containerFlatlist: {
         width: '100%',
-        height: '25%',
+        height: (Platform.OS === 'ios') ? '29%' : '25%',
+        paddingTop: (Platform.OS === 'ios') ? 20 : 0,
+        paddingBottom: (Platform.OS === 'ios') ? 20 : 0,
     },
 })
 
