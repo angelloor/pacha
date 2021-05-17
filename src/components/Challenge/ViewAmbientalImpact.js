@@ -53,7 +53,7 @@ const ViewAmbientalImpact = ({ modalVisible, setModalVisible, itemToRenderClass 
                                         item={item}
                                     />
                                 }
-                                contentContainerStyle={{ alignItems: 'center', paddingBottom: (itemToRenderClass.length >= 5) ? (paddingItem(itemToRenderClass, 4)) : 0 }}
+                                contentContainerStyle={{ alignItems: 'center', paddingBottom: (itemToRenderClass.length >= 5) ? (paddingItem(itemToRenderClass, 4)) : (paddingItem(itemToRenderClass, 3)) }}
                             />
                     }
 

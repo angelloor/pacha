@@ -8,7 +8,7 @@ const MyAppText = ({ fontSize, color, children, style }) => {
                 {
                     fontFamily: 'Nunito-Regular',
                     fontSize: fontSize,
-                    color: color
+                    color: color,
                 },
                 style
             ]

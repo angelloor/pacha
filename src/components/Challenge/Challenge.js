@@ -46,12 +46,10 @@ const Challenge = ({ route, user, cambiarUser, cambiarContent, contentGeneral })
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
 
-    useEffect(async () => {
+
+    const logistButtons = async () => {
         const inProgress = await returnInProgress()
         const challengeInProgressAsync = await returnChallengeInProgress()
-
-        clearTimeout(timeOut1)
-        clearTimeout(timeOut2)
 
         if (inProgress) {
             setIsProgres(true)
@@ -69,13 +67,19 @@ const Challenge = ({ route, user, cambiarUser, cambiarContent, contentGeneral })
                 setIsFinished(true)
             }
         }
+    }
+
+    useEffect(() => {
+        logistButtons()
+        clearTimeout(timeOut1)
+        clearTimeout(timeOut2)
     }, [])
 
     const handleStart = async () => {
         Storage.instance.get(`inProgress`)
             .then((response) => {
                 if (response) {
-                    activeError('Ya tienes asignado un reto, terminado y podrás continuar con tu aventura😊')
+                    activeError('Ya tienes asignado un reto, termínalo y podrás continuar con tu aventura😊')
                     return
                 } else {
                     setIsProgres(true)

@@ -37,9 +37,9 @@ const QuestionModal = ({ modalVisible, setModalVisible, category, item }) => {
                         <MyHeaderText fontSize={18} color={'white'}>Pregunta de la clase</MyHeaderText>
                     </View>
                     <View style={styles.row}>
-                        <MyAppText fontSize={16} color={'white'}>{question}</MyAppText>
                     </View>
                     <View style={styles.row}>
+                        <MyAppText fontSize={16} color={'white'} style={{ textAlign: 'justify' }}>{question}</MyAppText>
                         <FlatList
                             data={answers}
                             keyExtractor={(index) => index.toString()}
@@ -83,7 +83,7 @@ const QuestionModal = ({ modalVisible, setModalVisible, category, item }) => {
                         <MyHeaderText fontSize={18} color={'white'}>Pregunta de la clase</MyHeaderText>
                     </View>
                     <View style={styles.row}>
-                        <MyAppText fontSize={16} color={'white'}>{question}</MyAppText>
+                        <MyAppText fontSize={16} color={'white'} style={{ textAlign: 'justify' }}>{question}</MyAppText>
                     </View>
                     <View style={styles.row}>
                         <FlatList

@@ -29,7 +29,7 @@ const CalendarItem = (props) => {
                 </View>
             </View>
             <View style={styles.sectionSecundary}>
-                <MyAppText fontSize={14} color={'white'}>{description}</MyAppText>
+                <MyAppText fontSize={14} color={'white'} style={{ textAlign: 'justify' }}>{description}</MyAppText>
             </View>
         </LinearGradient>
     )

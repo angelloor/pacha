@@ -249,7 +249,6 @@ const Class = ({ route, user, cambiarUser, cambiarContent, contentGeneral }) => 
                                 />
 
                             }
-
                             {(isCompleted)
                                 ?
                                 <LinearGradient

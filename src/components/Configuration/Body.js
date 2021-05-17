@@ -4,6 +4,7 @@ import RNExitApp from 'react-native-exit-app'
 import fb from '../../assets/static/fb.png'
 import ig from '../../assets/static/ig.png'
 import logoPrefectura from '../../assets/static/logoPrefectura.png'
+import youtube from '../../assets/static/youtube.png'
 import Http from '../../libs/http'
 import Storage from '../../libs/Storage'
 import Color from '../../resources/Color'
@@ -28,7 +29,6 @@ const Body = (props) => {
             } else {
                 RNExitApp.exitApp()
             }
-
         }
     }
 
@@ -121,6 +121,11 @@ const Body = (props) => {
                         <Image
                             style={styles.img}
                             source={ig} />
+                    </OpenURLButtonNeverStyle>
+                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.youtube} openModal={openModal}>
+                        <Image
+                            style={styles.img}
+                            source={youtube} />
                     </OpenURLButtonNeverStyle>
                 </View>
             </View>

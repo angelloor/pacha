@@ -16,7 +16,7 @@ const Congratulations = ({ statusCongratulations, modalVisible, setModalVisible 
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Image style={styles.imgCongratulations} source={(statusCongratulations) ? iconCorrecto : iconInCorrecto} />
-                    <MyAppText fontSize={15} color={'white'} style={styles.modalText}>{(statusCongratulations) ? 'Excelente, veo que has prestado atención \n obtendrás la experiencia y los AmbientalCoints prometidos' : 'Suerte para la próxima, obtendrás solo la experiencia\n'}</MyAppText>
+                    <MyAppText fontSize={15} color={'white'} style={styles.modalText}>{(statusCongratulations) ? 'Excelente😊, veo que has prestado atención, obtendrás la experiencia y los AmbientalCoints prometidos' : 'Suerte para la próxima😔, obtendrás solo la experiencia\n'}</MyAppText>
                     <TouchableOpacity
                         activeOpacity={0.6}
                         style={[styles.button, styles.buttonClose]}
