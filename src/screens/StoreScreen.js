@@ -167,7 +167,7 @@ class StoreScreen extends Component {
                                             timeout02 = setTimeout(() => {
                                                 this.desactiveLoading()
                                                 this.openM('Compra realizada con éxito 😎')
-                                            }, 1000)
+                                            }, 0)
                                         }
                                     })
                                     .catch((err) => {
