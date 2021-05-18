@@ -76,8 +76,8 @@ timeConversion = (millisec) => {
 }
 
 getTimeChallenge = (fechaStart, fechaActual) => {
-    let timeToWaiting = 86400000
-    // let timeToWaiting = 10000
+    //let timeToWaiting = 86400000
+    let timeToWaiting = 10000
 
     let resta = fechaActual.getTime() - fechaStart.getTime()
     let isFinished = false

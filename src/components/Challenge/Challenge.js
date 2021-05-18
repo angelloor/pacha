@@ -277,7 +277,7 @@ const Challenge = ({ route, user, cambiarUser, cambiarContent, contentGeneral })
                                     clearStorage()
                                     //felicitaciones
                                     desactiveLoading()
-                                    activeError('Felicidades👏🥳, Gracias por contribuir al cambio del medio ambiente')
+                                    activeError('Felicidades👏🥳 Gracias por ser parte de la solución y contribuir al cuidado del ambiente.')
                                 }, 1000)
                             }
                         }

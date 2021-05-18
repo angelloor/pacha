@@ -116,8 +116,8 @@ class StoreScreen extends Component {
 
         const { storeItem, user } = this.props
 
-        idTimeOut = setTimeout(() => {
-            Storage.instance.get(`itemSelected`)
+        idTimeOut = setTimeout(async() => {
+            await Storage.instance.get(`itemSelected`)
                 .then((data) => {
                     const itemFound = storeItem.find(element => element._id == data)
                     const { price } = itemFound
@@ -158,7 +158,6 @@ class StoreScreen extends Component {
                                             }
                                             let yourShoppingActually = this.props.yourShopping
                                             yourShoppingActually.push(item)
-
                                             this.props.cambiarYourShopping(yourShoppingActually)
                                             this.props.cambiarUser({
                                                 ...user,
@@ -167,7 +166,7 @@ class StoreScreen extends Component {
                                             timeout02 = setTimeout(() => {
                                                 this.desactiveLoading()
                                                 this.openM('Compra realizada con éxito 😎')
-                                            }, 0)
+                                            }, 1000)
                                         }
                                     })
                                     .catch((err) => {
@@ -176,7 +175,7 @@ class StoreScreen extends Component {
                                     })
                             } else {
                                 this.desactiveLoading()
-                                this.activeError('Revisa tu conexión a internet🥶')
+                                this.activeError('Revisa tu conexión a internet 🥶')
                                 return
                             }
                         })

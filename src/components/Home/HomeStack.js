@@ -44,7 +44,7 @@ const HomeStack = (props) => {
                 name="Store"
                 component={StoreStack}
                 options={{
-                    title: 'Tienda',
+                    title: 'Ecotienda',
                     tabBarIcon: ({ size, color }) => (
                         <Image
                             style={{ tintColor: color, width: size, height: size }}
