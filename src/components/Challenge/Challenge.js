@@ -100,7 +100,9 @@ const Challenge = ({ route, user, cambiarUser, cambiarContent, contentGeneral })
                 if (response) {
                     let fechaStart = new Date(response)
                     let fechaActual = new Date(getFullDate())
+
                     const timeChallenge = getTimeChallenge(fechaStart, fechaActual)
+
                     if (timeChallenge.isFinished) {
                         activeError('El tiempo de espera ha finalizado sube tu foto🤗')
                         setIsFinished(true)

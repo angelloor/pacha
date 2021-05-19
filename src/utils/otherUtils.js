@@ -59,35 +59,36 @@ getFullDate = () => {
 }
 
 timeConversion = (millisec) => {
-    var seconds = (millisec / 1000).toFixed(0)
-    var minutes = (millisec / (1000 * 60)).toFixed(0)
-    var hours = (millisec / (1000 * 60 * 60)).toFixed(0)
-    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(0)
+    var seconds = Math.trunc((millisec / 1000))
+    var minutes = Math.trunc((seconds / 60))
+    var hours = Math.trunc((minutes / 60))
+    var days = Math.trunc((hours / 24))
 
-    if (seconds < 60) {
-        return seconds + " Segundos"
-    } else if (minutes < 60) {
-        return minutes + " Minutos"
-    } else if (hours < 24) {
-        return hours + " Horas " + (minutes - (hours * 60)) + " Minutos"
-    } else {
-        return days + " Día"
-    }
+    let horas = hours - (days * 24)
+    let minutos = minutes - (hours * 60)
+    let segundos = seconds - (minutes * 60)
+
+    return (horas) ? `${horas}${(horas == 1 ? ` hora` : ` horas`)} ${minutos}${(minutos == 1 ? ` minuto` : ` minutos`)} ${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}` :
+        (minutos) ? `${minutos}${(minutos == 1 ? ` minuto` : ` minutos`)} ${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}` : `${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}`
+
 }
 
 getTimeChallenge = (fechaStart, fechaActual) => {
-    //let timeToWaiting = 86400000
-    let timeToWaiting = 10000
+    let timeToWaiting = 86400000
+    // let timeToWaiting = 10000
 
-    let resta = fechaActual.getTime() - fechaStart.getTime()
+    let milfechaStart = fechaStart.getTime()
+    let milfechaActual = fechaActual.getTime()
+
+    let timeGoal = milfechaStart + timeToWaiting
+    let resta = timeGoal - milfechaActual
+
     let isFinished = false
-    let tiempoFaltante = timeToWaiting - resta
-
-    if (resta >= timeToWaiting) {
+    if (resta <= 0) {
         isFinished = true
         return { isFinished }
     } else {
-        let timeRemaining = timeConversion(tiempoFaltante)
+        let timeRemaining = timeConversion(resta)
         isFinished = false
         return { isFinished, timeRemaining }
     }
