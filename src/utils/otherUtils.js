@@ -32,6 +32,7 @@ getYear = () => {
 
 getFullDate = () => {
     const date = new Date()
+
     let anio = date.getFullYear()
     let mes = date.getMonth() + 1
     let dia = date.getDate()
@@ -55,7 +56,7 @@ getFullDate = () => {
         segundos = `0${segundos}`
     }
 
-    return `${anio}-${mes}-${26}T${horas}:${minutos}:${segundos}`
+    return `${anio}-${mes}-${dia}T${horas}:${minutos}:${segundos}`
 }
 
 timeConversion = (millisec) => {
@@ -70,7 +71,6 @@ timeConversion = (millisec) => {
 
     return (horas) ? `${horas}${(horas == 1 ? ` hora` : ` horas`)} ${minutos}${(minutos == 1 ? ` minuto` : ` minutos`)} ${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}` :
         (minutos) ? `${minutos}${(minutos == 1 ? ` minuto` : ` minutos`)} ${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}` : `${segundos}${(segundos == 1 ? ` segundo` : ` segundos`)}`
-
 }
 
 getTimeChallenge = (fechaStart, fechaActual) => {
@@ -79,11 +79,11 @@ getTimeChallenge = (fechaStart, fechaActual) => {
 
     let milfechaStart = fechaStart.getTime()
     let milfechaActual = fechaActual.getTime()
-
     let timeGoal = milfechaStart + timeToWaiting
     let resta = timeGoal - milfechaActual
 
     let isFinished = false
+
     if (resta <= 0) {
         isFinished = true
         return { isFinished }
