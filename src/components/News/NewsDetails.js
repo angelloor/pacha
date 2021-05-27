@@ -1,22 +1,44 @@
-import React, { useState } from 'react'
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Image, Linking, ScrollView, StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Http from '../../libs/http'
+import Storage from '../../libs/Storage'
 import Color from '../../resources/Color'
+import { getDataParentGate } from '../../utils/otherUtils'
 import BackGroundGradient from '../BackGroundGradient'
 import MyAppText from '../MyAppText'
 import MyHeaderText from '../MyHeaderText'
 import OpenURLButtonNeverStyle from '../OpenURLButtonNeverStyle'
+import ParentalGate from '../ParentalGate'
 import ScreenHeader from '../ScreenHeader'
 import SimpleModal from '../SimpleModal'
+
+let dataParentGate = ''
+var idTimeOut
+var idTimeOut01
+
+let url = ''
 
 const NewsDetails = ({ route }) => {
     const { nameButton, linkButton, imageUrl, title, description, datePublished } = route.params.item
     const url = `${Http.instance.server}${imageUrl}`
 
+    //parentalGate
+    useEffect(() => {
+        return () => {
+            clearTimeout(idTimeOut)
+        }
+    }, [])
+
     //modal Link 
     const [textModal, setTextModal] = useState('')
     const [statusModal, setStatusModal] = useState(false)
+
+    //parentalGate
+    const [statusParentalGate, setStatusParentalGate] = useState(false)
+    const [question, setQuestion] = useState('')
+    const [correctAnswer, setCorrectAnswer] = useState('')
+    const [answers, setAnswers] = useState([])
 
     const openModal = (textModal) => {
         setStatusModal(true)
@@ -27,6 +49,49 @@ const NewsDetails = ({ route }) => {
         setStatusModal(false)
         setTextModal('')
     }
+
+    //parentalGate
+    const openParentalGate = () => {
+        setStatusParentalGate(true)
+        dataParentGate = getDataParentGate()
+        setQuestion(dataParentGate.question)
+        setCorrectAnswer(dataParentGate.correctAnswer)
+        setAnswers(dataParentGate.answers)
+    }
+
+    const closeParentalGate = () => {
+        setStatusParentalGate(false)
+        idTimeOut = setTimeout(() => {
+            Storage.instance.get(`selectedAnswer`)
+                .then((data) => {
+                    if (dataParentGate.correctAnswer == data) {
+                        handlePress()
+                    } else {
+                        return
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }, 10)
+    }
+
+    //handlePress
+    const handlePress = useCallback(async () => {
+        Storage.instance.get(`url`)
+            .then(async (url) => {
+                console.log(url)
+                const supported = await Linking.canOpenURL(url)
+                if (supported) {
+                    await Linking.openURL(url)
+                } else {
+                    openModal(`No se puede abrir la url: ${url}`)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [url])
 
     return (
         <SafeAreaView>
@@ -39,6 +104,13 @@ const NewsDetails = ({ route }) => {
                             textBtn='Ok'
                             modalVisible={statusModal}
                             setModalVisible={closeModal}
+                        />
+                        <ParentalGate
+                            question={question}
+                            answers={answers}
+                            correctAnswer={correctAnswer}
+                            modalVisible={statusParentalGate}
+                            setModalVisible={closeParentalGate}
                         />
                         <View style={styles.containerTitle}>
                             <MyHeaderText fontSize={16} color={'white'} style={styles.titleTxt}>{title}</MyHeaderText>
@@ -58,7 +130,7 @@ const NewsDetails = ({ route }) => {
                             <MyAppText fontSize={14} color={'white'} style={styles.datePublished}>{datePublished}</MyAppText>
                         </View>
                         {(nameButton) ?
-                            <OpenURLButtonNeverStyle url={linkButton} openModal={openModal}>
+                            <OpenURLButtonNeverStyle url={linkButton} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>
                                 <View style={styles.containerButton}>
                                     <MyAppText fontSize={14} color={'white'}>{nameButton}</MyAppText>
                                 </View>

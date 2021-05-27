@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { BackHandler, Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { BackHandler, Image, Linking, Platform, StyleSheet, TouchableOpacity, View } from 'react-native'
 import RNExitApp from 'react-native-exit-app'
 import fb from '../../assets/static/fb.png'
 import ig from '../../assets/static/ig.png'
@@ -8,17 +8,30 @@ import youtube from '../../assets/static/youtube.png'
 import Http from '../../libs/http'
 import Storage from '../../libs/Storage'
 import Color from '../../resources/Color'
+import { getDataParentGate } from '../../utils/otherUtils'
 import MyAppText from '../MyAppText'
 import OpenURLButton from '../OpenURLButton'
 import OpenURLButtonNeverStyle from '../OpenURLButtonNeverStyle'
+import ParentalGate from '../ParentalGate'
 import SimpleModal from '../SimpleModal'
 import ChangePassword from './ChangePassword'
+
+var idTimeOut
+let dataParentGate = ''
+let url = ''
 
 const Body = (props) => {
     const { onChangePassword, modalVisible, openModalVisible, closeModalVisible, setOne, setTwo, setThree, focusTwo, focusThree, configuration } = props
     const configurationRow = configuration[0]
     const privacyPolicies = `${Http.instance.server}${configurationRow.Links.privacyPolicies}`
     const termsAndConditions = `${Http.instance.server}${configurationRow.Links.termsAndConditions}`
+
+    //parentalGate
+    useEffect(() => {
+        return () => {
+            clearTimeout(idTimeOut)
+        }
+    }, [])
 
     const handleCloseSesion = async () => {
         const user = await Storage.instance.remove(`user`)
@@ -36,6 +49,12 @@ const Body = (props) => {
     const [textModal, setTextModal] = useState('')
     const [statusModal, setStatusModal] = useState(false)
 
+    //parentalGate
+    const [statusParentalGate, setStatusParentalGate] = useState(false)
+    const [question, setQuestion] = useState('')
+    const [correctAnswer, setCorrectAnswer] = useState('')
+    const [answers, setAnswers] = useState([])
+
     const openModal = (textModal) => {
         setTextModal(textModal)
         setStatusModal(true)
@@ -46,6 +65,50 @@ const Body = (props) => {
         setStatusModal(false)
     }
 
+
+    //parentalGate
+    const openParentalGate = () => {
+        setStatusParentalGate(true)
+        dataParentGate = getDataParentGate()
+        setQuestion(dataParentGate.question)
+        setCorrectAnswer(dataParentGate.correctAnswer)
+        setAnswers(dataParentGate.answers)
+    }
+
+    const closeParentalGate = () => {
+        setStatusParentalGate(false)
+        idTimeOut = setTimeout(() => {
+            Storage.instance.get(`selectedAnswer`)
+                .then((data) => {
+                    if (dataParentGate.correctAnswer == data) {
+                        handlePress()
+                    } else {
+                        return
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }, 10)
+    }
+
+    //handlePress
+    const handlePress = useCallback(async () => {
+        Storage.instance.get(`url`)
+            .then(async (url) => {
+                console.log(url)
+                const supported = await Linking.canOpenURL(url)
+                if (supported) {
+                    await Linking.openURL(url)
+                } else {
+                    openModal(`No se puede abrir la url: ${url}`)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [url])
+
     return (
         <View style={styles.container}>
             <View style={styles.containerAll}>
@@ -54,6 +117,13 @@ const Body = (props) => {
                     textBtn='Ok'
                     modalVisible={statusModal}
                     setModalVisible={closeModal}
+                />
+                <ParentalGate
+                    question={question}
+                    answers={answers}
+                    correctAnswer={correctAnswer}
+                    modalVisible={statusParentalGate}
+                    setModalVisible={closeParentalGate}
                 />
                 <ChangePassword
                     modalVisible={modalVisible}
@@ -80,15 +150,15 @@ const Body = (props) => {
                 </View>
                 <View style={styles.containerLink}>
                     <MyAppText fontSize={15} color={'white'}>Políticas de privacidad</MyAppText>
-                    <OpenURLButton url={privacyPolicies} openModal={openModal}>Leer</OpenURLButton>
+                    <OpenURLButton url={privacyPolicies} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>Leer</OpenURLButton>
                 </View>
                 <View style={styles.containerLink}>
                     <MyAppText fontSize={15} color={'white'}>Términos y condiciones</MyAppText>
-                    <OpenURLButton url={termsAndConditions} openModal={openModal}>Leer</OpenURLButton>
+                    <OpenURLButton url={termsAndConditions} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>Leer</OpenURLButton>
                 </View>
                 <View style={styles.containerLink}>
                     <MyAppText fontSize={15} color={'white'}>¿Necesitas ayuda?</MyAppText>
-                    <OpenURLButton url={configurationRow.Links.suport} openModal={openModal}>Soporte</OpenURLButton>
+                    <OpenURLButton url={configurationRow.Links.suport} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>Soporte</OpenURLButton>
                 </View>
                 <View style={styles.containerPass}>
                     <TouchableOpacity
@@ -109,20 +179,19 @@ const Body = (props) => {
                     >
                         <MyAppText fontSize={15} color={'white'}>Cerrar sesión</MyAppText>
                     </TouchableOpacity>
-
                 </View>
                 <View style={styles.containerSocialLink}>
-                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.facebook} openModal={openModal}>
+                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.facebook} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>
                         <Image
                             style={styles.img}
                             source={fb} />
                     </OpenURLButtonNeverStyle>
-                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.instagram} openModal={openModal}>
+                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.instagram} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>
                         <Image
                             style={styles.img}
                             source={ig} />
                     </OpenURLButtonNeverStyle>
-                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.youtube} openModal={openModal}>
+                    <OpenURLButtonNeverStyle url={configurationRow.socialLinks.youtube} openParentalGate={() => { openParentalGate() }} handlePress={() => { handlePress() }}>
                         <Image
                             style={styles.img}
                             source={youtube} />

@@ -1,21 +1,16 @@
-import React, { useCallback } from 'react'
-import { Linking, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import Storage from '../libs/Storage';
 
-const OpenURLButtonNeverStyle = ({ url, children, openModal }) => {
-    const handlePress = useCallback(async () => {
-        const supported = await Linking.canOpenURL(url)
-        if (supported) {
-            await Linking.openURL(url)
-        } else {
-            openModal(`No se puede abrir la url: ${url}`)
-        }
-    }, [url])
-
+const OpenURLButtonNeverStyle = ({ url, children, openParentalGate, user, handlePress }) => {
+    const platformOs = Platform.OS
+    const ageUser = user.age
 
     return <TouchableOpacity
         activeOpacity={0.6}
         style={styles.btn}
-        onPress={handlePress}>
+        onPress={(platformOs == 'ios' && ageUser < 15) ? () => { Storage.instance.store(`url`, url); openParentalGate() } : () => { Storage.instance.store(`url`, url); handlePress() }}>
         {children}
     </TouchableOpacity>
 }
@@ -27,4 +22,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default OpenURLButtonNeverStyle
+const mapStateToProps = state => {
+    return {
+        user: state.user,
+    }
+}
+
+export default connect(mapStateToProps, null)(OpenURLButtonNeverStyle)

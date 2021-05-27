@@ -94,11 +94,48 @@ getTimeChallenge = (fechaStart, fechaActual) => {
     }
 }
 
+getDataParentGate = () => {
+    let data = [
+        {
+            question: '¿Cuál es el río más caudaloso del mundo?',
+            correctAnswer: 'El Amazonas',
+            answers: ['El Amazonas', 'Congo', 'Orinoco']
+        },
+        {
+            question: '¿Cuántos segundos tiene un día? ',
+            correctAnswer: '86400',
+            answers: ['8640', '36000', '86400']
+        },
+        {
+            question: '¿Cada cuántos años tenemos un año bisiesto?',
+            correctAnswer: '4',
+            answers: ['2', '4', '3']
+        },
+        {
+            question: '¿Cuántos meses tienen 28 días?',
+            correctAnswer: '1',
+            answers: ['2', '1', '4']
+        },
+        {
+            question: '¿Qué planeta es el más cercano al Sol?',
+            correctAnswer: 'Mercurio',
+            answers: ['Mercurio', 'Venus', 'Tierra']
+        },
+        {
+            question: '¿Cuál es la montaña más alta en la actualidad?',
+            correctAnswer: 'El Everest',
+            answers: ['K2', 'El Everest', 'Kanchenjunga']
+        },
+    ]
+    return data[Math.floor(Math.random() * 6)]
+}
+
 module.exports = {
     getDayMonth,
     getLevel,
     getYear,
     timeConversion,
     getTimeChallenge,
-    getFullDate
+    getFullDate,
+    getDataParentGate
 }
