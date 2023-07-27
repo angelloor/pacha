@@ -28,8 +28,8 @@ import Loader from '../components/Loader'
 import MyAppText from '../components/MyAppText'
 import SimpleModal from '../components/SimpleModal'
 import TitleLogo from '../components/TitleLogo'
-import Http from '../libs/http'
 import Storage from '../libs/Storage'
+import Http from '../libs/http'
 import Color from '../resources/Color'
 
 var timeout01

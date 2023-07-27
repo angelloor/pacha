@@ -17,8 +17,8 @@ import ButtonGreen from '../components/ButtonGreen'
 import ButtonWhite from '../components/ButtonWhite'
 import Error from '../components/Error'
 import Loader from '../components/Loader'
-import Http from '../libs/http'
 import Storage from '../libs/Storage'
+import Http from '../libs/http'
 
 var timeout01
 

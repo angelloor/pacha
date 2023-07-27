@@ -5,8 +5,8 @@ import fb from '../../assets/static/fb.png'
 import ig from '../../assets/static/ig.png'
 import logoPrefectura from '../../assets/static/logoPrefectura.png'
 import youtube from '../../assets/static/youtube.png'
-import Http from '../../libs/http'
 import Storage from '../../libs/Storage'
+import Http from '../../libs/http'
 import Color from '../../resources/Color'
 import { getDataParentGate } from '../../utils/otherUtils'
 import MyAppText from '../MyAppText'
@@ -145,7 +145,7 @@ const Body = (props) => {
                     <View style={styles.containerText}>
                         <MyAppText fontSize={14} color={'white'}>
                             El Gobierno Autónomo Descentralizado Provincial de Pastaza a la vanguardia del desarrollo Regional fortalece la Educación Ambiental en territorio
-                </MyAppText>
+                        </MyAppText>
                     </View>
                 </View>
                 <View style={styles.containerLink}>
